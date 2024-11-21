@@ -1,0 +1,8 @@
+1) La base es sobre una tienda de vidojuegos, está normalizadas hata la 3FN(tercera forma normal).
+2) Les paso el SQL para que no halla problemas de compatibilídad entre versiones de Postgres u otros gestores. Así cada quien usa el gestor que quiera. 
+3) El SQL está diseñado para que la base de datos se cree solo con:
+  3.1) abrir una ventana de query en el gestor que quiran/terminal/etc.;
+  3.2) copiar y poegar el SQL en la ventana de query
+  3.3) n el sql, descomentar la línea "--create database pp";
+  3.4) ejecutar todo (seleccionar todo y precionar F5 en mi caso)
+4) hasta el final del SQL vienen comandos "select*tablas" para que vean si se creo correctamente la base de datos(en total son 12 tablas); y todos los id empeizan en 1. 
