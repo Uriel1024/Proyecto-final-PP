@@ -10,8 +10,6 @@ public class UsuariosDAO {
             this.con = con;
     }
 
-
-
     public void consultarUsuario(int id){
         String consulta = "select * from usuarios where id_usuario = ?";
 
@@ -25,6 +23,7 @@ public class UsuariosDAO {
                 String email = rs.getString("email");
                 String direccion = rs.getString("direccion");
                 String telefono = rs.getString("telefono");
+                String rol = rs.getString("rol");
 
                 System.out.println("Los datos del usuario con ID " + id);
                 System.out.println("El nombre del usuario es: " + nombre);
@@ -32,7 +31,8 @@ public class UsuariosDAO {
                 System.out.println("El segundo apellido del usuario es: " + segundo_ap);
                 System.out.println("El email del usuario es: " + email);
                 System.out.println("La direccion es: "  + direccion );
-                System.out.println("El telefono es: " + telefono + "\n\n\n\n\n");
+                System.out.println("El telefono es: " + telefono );
+                System.out.println("EL rol es: " + rol + "\n\n\n\n\n"       );
             }else{
                 System.out.println("No se encontro un usuario con el ID: " + id + " \n\n\n\n\n");
             }
@@ -72,7 +72,6 @@ public class UsuariosDAO {
         }
     }
 
-
     public void eliminar_usuario(int id){
         String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
         try(PreparedStatement ps = con.prepareStatement(sql)){
@@ -89,7 +88,6 @@ public class UsuariosDAO {
         }
 
     }
-
 
     public int obtenerID() {
         String consulta = "SELECT COALESCE(MAX(id_usuario), 0) + 1 AS nuevo_id FROM usuarios";
@@ -109,6 +107,4 @@ public class UsuariosDAO {
         administrador,
         cliente
     }
-
-
 }

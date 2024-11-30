@@ -1,4 +1,5 @@
 import java.sql.Connection;
+import java.sql.SQLOutput;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -15,6 +16,9 @@ public class Main {
         VideojuegosDAO v1 = new VideojuegosDAO(connection);
         UsuariosDAO u1 = new UsuariosDAO(connection);
         UsuariosDAO.RolUsuario rolUsuario = null;
+        DetallesPedidoDAO d1 = new DetallesPedidoDAO(connection);
+        PedidosDAO p1 = new PedidosDAO(connection);
+        PedidosDAO.estadoPedidos estadoPedido = null;
         int op,op1, id;
 
         do{
@@ -34,6 +38,16 @@ public class Main {
                             System.out.println("Ingresa el ID del usuario a buscar:");
                             id = in.nextInt();
                             u1.consultarUsuario(id);
+                            break;
+                        case 3:
+                            System.out.println("Ingresa el ID del pedido a buscar: ");
+                            id = in.nextInt();
+                            p1.consultarPedidos(id);
+                            break;
+                        case 4:
+                            System.out.println("Ingresa el ID de los detalles del  pedido a buscar:");
+                            id = in.nextInt();
+                            d1.consultarDetallesPedido(id);
                             break;
                     }
                     break;
@@ -57,7 +71,7 @@ public class Main {
                             String desarrol = in.nextLine();
                             System.out.println("Ingresa la fecha de lanzamiento del videojuego (dd/mm/yyyy):");
                             String fecha = in.next();
-                            System.out.println(stringToLocalDate(fecha));
+
                             v1.agregarVideojuego(nombre,plataforma,precio,stock,desarrol,stringToLocalDate(fecha));
                             break;
                         case 2:
@@ -79,10 +93,27 @@ public class Main {
                             try{
                                 rolUsuario = UsuariosDAO.RolUsuario.valueOf(rol);
                                 System.out.println("Rol seleccionado: " + rolUsuario);
+                                u1.agregarUsuario(nombreu,apellido1,apellido2,email,direccion,telefono,rolUsuario);
                             }catch(IllegalArgumentException e){
                                 System.out.println("Rol no valido.");
                             }
-                            u1.agregarUsuario(nombreu,apellido1,apellido2,email,direccion,telefono,rolUsuario);
+                            break;
+                        case 3:
+                            System.out.println("Ingresa el ID del usuario: ");
+                            int id1 = in.nextInt();
+                            System.out.println("Ingresa la fecha del pedido (dd/mm/yyyy): ");
+                            in.nextLine();
+                            String fecha1 = in.next();
+                            System.out.println("Ingresa el estado del pedido(pendiente,enviado,entregado): ");
+                            in.nextLine();
+                            String estado1 = in.nextLine().trim().toLowerCase();
+                            try{
+                                estadoPedido = PedidosDAO.estadoPedidos.valueOf(estado1);
+                                System.out.println("El estado es: " + estado1);
+                                p1.ingresarPedido(id1, stringToLocalDate(fecha1),estadoPedido);
+                            }catch (IllegalArgumentException e){
+                                System.out.println("Estado no valido.");
+                            }
                             break;
                     }
                     break;
@@ -99,6 +130,11 @@ public class Main {
                             System.out.println("Ingresa el ID del usuario a eliminar: ");
                             id = in.nextInt();
                             u1.eliminar_usuario(id);
+                            break;
+                        case 3:
+                            System.out.println("Ingresa el ID del pedido a elimar:");
+                            id = in.nextInt();
+                            p1.eliminarPedido(id);
                     }
                     break;
                 case 4:
@@ -135,19 +171,23 @@ public class Main {
 
     public static void consultarDatos(){
         System.out.println("1.Videojuegos.");
-        System.out.println("2.Usuario");
+        System.out.println("2.Usuario.");
+        System.out.println("3.Pedidos.");
+        System.out.println("4.Detalle de pedidos.");
         System.out.println("Selecciona una tabla para buscar un elemento: ");
     }
 
     public static void ingresarDatos(){
         System.out.println("1.Videojuegos.");
-        System.out.println("2.Usuario");
+        System.out.println("2.Usuario.");
+        System.out.println("3.Pedidos.");
         System.out.println("Selecciona una tabla para agregar un elemento: ");
     }
 
     public static void eliminarDatos(){
-        System.out.println("1.Videojuegos");
-        System.out.println("2.Usuarios");
+        System.out.println("1.Videojuegos.");
+        System.out.println("2.Usuarios.");
+        System.out.println("3.Pedidos.");
         System.out.println("Selecciona una tabla para eliminar un elemento: ");
     }
 }

@@ -23,13 +23,15 @@ public class VideojuegosDAO {
                 String plataforma = rs.getString("plataforma");
                 int stock = rs.getInt("stock");
                 String desarrollador = rs.getString("desarrollador");
+                LocalDate fecha = rs.getDate("fecha_lanzamiento").toLocalDate();
 
                 System.out.println("ID: " + idVideojuego);
                 System.out.println("Nombre: " +  nombre);;
                 System.out.println("Precio: " + precio);
                 System.out.println("Plataforma:" + plataforma);
                 System.out.println("Stock: " + stock);
-                System.out.println("Desarrollador: " + desarrollador + "\n\n\n\n\n\n");
+                System.out.println("Desarrollador: " + desarrollador );
+                System.out.println("Fecha de lanzamiento: " + fecha + "\n\n\n\n\n\n");
             }else{
                 System.out.println("No se encontro un videojuego con el ID: " + id);
             }
