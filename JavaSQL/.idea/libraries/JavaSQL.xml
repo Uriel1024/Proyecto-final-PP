@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="JavaSQL">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/dist/JavaSQL.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
