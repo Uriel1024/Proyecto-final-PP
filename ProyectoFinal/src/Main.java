@@ -2,7 +2,6 @@ import java.sql.Connection;
 import java.sql.SQLOutput;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
 import java.util.Scanner;
 import java.time.*;
 
@@ -19,6 +18,9 @@ public class Main {
         DetallesPedidoDAO d1 = new DetallesPedidoDAO(connection);
         PedidosDAO p1 = new PedidosDAO(connection);
         PedidosDAO.estadoPedidos estadoPedido = null;
+        ExtensionesVIdeojuegosDAO e1 = new ExtensionesVIdeojuegosDAO(connection);
+
+        boolean test;
         int op,op1, id;
 
         do{
@@ -48,6 +50,14 @@ public class Main {
                             System.out.println("Ingresa el ID de los detalles del  pedido a buscar:");
                             id = in.nextInt();
                             d1.consultarDetallesPedido(id);
+                            break;
+                        case 5:
+                            System.out.println("Ingresa el ID de la extension a buscar: ");
+                            id = in.nextInt();
+                            e1.consultarExtensiones(id);
+                            break;
+                        default:
+                            System.out.println("Opcion no valida, inserta un opcion valida.");
                             break;
                     }
                     break;
@@ -115,6 +125,26 @@ public class Main {
                                 System.out.println("Estado no valido.");
                             }
                             break;
+                        case 4:
+                            System.out.println("Ingresa el ID del videojuego: ");
+                            id = in.nextInt();
+                            test = v1.buscarVideojuego(id);
+                            if(test){
+                                System.out.println("Ingresa el nombre de la extension:   ");
+                                in.nextLine();
+                                String extension = in.nextLine();
+                                System.out.println("Ingresa el precio de la extension: ");
+                                double prec = in.nextDouble();
+                                System.out.println("Ingresa la descripcion de la extension: ");
+                                in.nextLine();
+                                String descripcion = in.nextLine();
+                                System.out.println("Ingresa le fecha de la extension (dd/mm/yyyy):");
+                                String fecha2 = in.next();
+                                e1.agregarExtension(id,extension,prec,descripcion,stringToLocalDate(fecha2));
+                            }else{
+                                System.out.println("Videojuego con ID no encontrado. ");
+                            }
+                            break;
                     }
                     break;
                 case 3:
@@ -132,9 +162,15 @@ public class Main {
                             u1.eliminar_usuario(id);
                             break;
                         case 3:
-                            System.out.println("Ingresa el ID del pedido a elimar:");
+                            System.out.println("Ingresa el ID del pedido a eliminar:");
                             id = in.nextInt();
                             p1.eliminarPedido(id);
+                            break;
+                        case 4:
+                            System.out.println("Ingresa el ID de la extension a eliminar: ");
+                            id = in.nextInt();
+                            e1.eliminarExtension(id);
+                            break;
                     }
                     break;
                 case 4:
@@ -174,6 +210,7 @@ public class Main {
         System.out.println("2.Usuario.");
         System.out.println("3.Pedidos.");
         System.out.println("4.Detalle de pedidos.");
+        System.out.println("5.Extension de videojuegos");
         System.out.println("Selecciona una tabla para buscar un elemento: ");
     }
 
@@ -181,6 +218,7 @@ public class Main {
         System.out.println("1.Videojuegos.");
         System.out.println("2.Usuario.");
         System.out.println("3.Pedidos.");
+        System.out.println("4.Extensiones videojuegos");
         System.out.println("Selecciona una tabla para agregar un elemento: ");
     }
 
@@ -188,6 +226,7 @@ public class Main {
         System.out.println("1.Videojuegos.");
         System.out.println("2.Usuarios.");
         System.out.println("3.Pedidos.");
+        System.out.println("4.Extensiones videojuegos");
         System.out.println("Selecciona una tabla para eliminar un elemento: ");
     }
 }

@@ -41,6 +41,24 @@ public class VideojuegosDAO {
         }
     }
 
+    public boolean buscarVideojuego(int id){
+        String sql = "SELECT * FROM videojuegos WHERE id_videojuego = ?";
+        try(PreparedStatement ps = conexion.prepareStatement(sql)){
+            ps.setInt(1,id);
+            ResultSet rs =  ps.executeQuery();
+            if(rs.next()){
+                System.out.println("Nombre videojuego: " + rs.getString("titulo"));
+                return true;
+            }else{
+                System.out.println("No existe un videojuego con el ID: " + id);
+                return false;
+            }
+        }catch (SQLException e){
+            System.out.println("Error al consultar videojuego: ");
+        }
+        return false;
+    }
+
     public void agregarVideojuego(String titulo, String plataforma, double precio, int stock, String desarrollador, LocalDate fecha_lanzamiento ){
         int id_videojuego = obtenerID();
         if(id_videojuego == -1){
