@@ -65,10 +65,28 @@ public class ExtensionesVIdeojuegosDAO {
                 System.out.println("No se pudo agregar la extension\n\n\n\n\n");
             }
         }catch (SQLException e){
-            System.out.println("Erro al agregar extension: ");
+            System.out.println("Error al agregar extension.\n\n\n\n\n");
             e.printStackTrace();
         }
 
+    }
+
+    public boolean buscarExtension(int id){
+        String sql = "Select * from ExtensionesVideojuegos where id_extension = ?";
+        try(PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                System.out.println("Nombre de la extension: " + rs.getString("nombre_extension") + "\n\n\n\n\n");
+                return true;
+            }else{
+                System.out.println("No se encontro la extension con ID + " + id + "\n\n\n\n\n");
+                return false;
+            }
+        }catch (SQLException e){
+            System.out.println("Error al buscar la extension. \n\n\n\n\n");
+            return  false;
+        }
     }
 
     public void eliminarExtension(int id){
@@ -87,9 +105,6 @@ public class ExtensionesVIdeojuegosDAO {
         }
     }
 
-
-
-
     public int obtenerID() {
         String consulta = "SELECT COALESCE(MAX(id_extension), 0) + 1 AS nuevo_id FROM ExtensionesVideojuegos";
         try (       PreparedStatement ps = con.prepareStatement(consulta);
@@ -103,5 +118,4 @@ public class ExtensionesVIdeojuegosDAO {
         }
         return -1; // Devuelve -1 si ocurre un error
     }
-
 }

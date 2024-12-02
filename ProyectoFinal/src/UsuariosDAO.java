@@ -72,6 +72,26 @@ public class UsuariosDAO {
         }
     }
 
+    public boolean buscarUsuario(int id){
+        String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
+
+        try(PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setInt(1,id);
+            ResultSet rs =  ps.executeQuery();
+            if(rs.next()){
+                System.out.println("Nombre usuario: " + rs.getString("nombre"));
+                System.out.println("Apellido usuario: " + rs.getString("primer_apellido"));
+                return true;
+            }else{
+                return false ;
+            }
+        }catch(SQLException e) {
+            System.out.println("Error al consultar el usuario.");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void eliminar_usuario(int id){
         String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
         try(PreparedStatement ps = con.prepareStatement(sql)){

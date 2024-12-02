@@ -19,6 +19,8 @@ public class Main {
         PedidosDAO p1 = new PedidosDAO(connection);
         PedidosDAO.estadoPedidos estadoPedido = null;
         ExtensionesVIdeojuegosDAO e1 = new ExtensionesVIdeojuegosDAO(connection);
+        DetalleCompraExtenxsionesDAO dc1 = new DetalleCompraExtenxsionesDAO(connection);
+
 
         boolean test;
         int op,op1, id;
@@ -58,6 +60,11 @@ public class Main {
                             break;
                         default:
                             System.out.println("Opcion no valida, inserta un opcion valida.");
+                            break;
+                        case 6:
+                            System.out.println("Ingresa el ID del detalla de la compra de extension");
+                            id = in.nextInt();
+                            dc1.DetallesExtensions(id);
                             break;
                     }
                     break;
@@ -111,18 +118,23 @@ public class Main {
                         case 3:
                             System.out.println("Ingresa el ID del usuario: ");
                             int id1 = in.nextInt();
-                            System.out.println("Ingresa la fecha del pedido (dd/mm/yyyy): ");
-                            in.nextLine();
-                            String fecha1 = in.next();
-                            System.out.println("Ingresa el estado del pedido(pendiente,enviado,entregado): ");
-                            in.nextLine();
-                            String estado1 = in.nextLine().trim().toLowerCase();
-                            try{
-                                estadoPedido = PedidosDAO.estadoPedidos.valueOf(estado1);
-                                System.out.println("El estado es: " + estado1);
-                                p1.ingresarPedido(id1, stringToLocalDate(fecha1),estadoPedido);
-                            }catch (IllegalArgumentException e){
-                                System.out.println("Estado no valido.");
+                            boolean t1  = u1.buscarUsuario(id1);
+                            if(t1){
+                                System.out.println("Ingresa la fecha del pedido (dd/mm/yyyy): ");
+                                in.nextLine();
+                                String fecha1 = in.next();
+                                System.out.println("Ingresa el estado del pedido(pendiente,enviado,entregado): ");
+                                in.nextLine();
+                                String estado1 = in.nextLine().trim().toLowerCase();
+                                try {
+                                    estadoPedido = PedidosDAO.estadoPedidos.valueOf(estado1);
+                                    System.out.println("El estado es: " + estado1);
+                                    p1.ingresarPedido(id1, stringToLocalDate(fecha1), estadoPedido);
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println("Estado no valido.");
+                                }
+                            }else{
+                                System.out.println("No existe un usuario con el ID: " + id1);
                             }
                             break;
                         case 4:
@@ -145,6 +157,20 @@ public class Main {
                                 System.out.println("Videojuego con ID no encontrado. ");
                             }
                             break;
+                        case 5:
+                            System.out.println("Ingresa el ID del usuario: ");
+                            int idu = in.nextInt();
+                            System.out.println("Ingresa el ID de la extension:");
+                            int ide = in.nextInt();
+                            boolean test1 = u1.buscarUsuario(idu);
+                            boolean test2 = e1.buscarExtension(ide);
+                            if (test1 && test2){
+                                System.out.println("Ingresa la fecha de compra: ");
+                                String fechaC = in.next();
+                                System.out.println("Ingresa la cantidad de extensiones que se compraron:  ");
+                                int cant1 = in.nextInt();
+                                dc1.agregarDetalleExtension(idu,ide,stringToLocalDate(fechaC),cant1);
+                            }
                     }
                     break;
                 case 3:
@@ -170,6 +196,14 @@ public class Main {
                             System.out.println("Ingresa el ID de la extension a eliminar: ");
                             id = in.nextInt();
                             e1.eliminarExtension(id);
+                            break;
+                        case 5:
+                            System.out.println("Ingresa el ID del detalle de la compra de la extension: ");
+                            id = in.nextInt();
+                            dc1.eliminarDetalleExtension(id);
+                            break;
+                        default:
+                            System.out.println("Ingresa una opcion valida para poder continuar.");
                             break;
                     }
                     break;
@@ -210,7 +244,8 @@ public class Main {
         System.out.println("2.Usuario.");
         System.out.println("3.Pedidos.");
         System.out.println("4.Detalle de pedidos.");
-        System.out.println("5.Extension de videojuegos");
+        System.out.println("5.Extension de videojuegos.");
+        System.out.println("6.Detalle compra extension.");
         System.out.println("Selecciona una tabla para buscar un elemento: ");
     }
 
@@ -218,7 +253,8 @@ public class Main {
         System.out.println("1.Videojuegos.");
         System.out.println("2.Usuario.");
         System.out.println("3.Pedidos.");
-        System.out.println("4.Extensiones videojuegos");
+        System.out.println("4.Extensiones videojuegos.");
+        System.out.println("5.Detalle compra extension.");
         System.out.println("Selecciona una tabla para agregar un elemento: ");
     }
 
@@ -226,7 +262,8 @@ public class Main {
         System.out.println("1.Videojuegos.");
         System.out.println("2.Usuarios.");
         System.out.println("3.Pedidos.");
-        System.out.println("4.Extensiones videojuegos");
+        System.out.println("4.Extensiones videojuegos.");
+        System.out.println("5.Detalle compra extensiones.");
         System.out.println("Selecciona una tabla para eliminar un elemento: ");
     }
 }

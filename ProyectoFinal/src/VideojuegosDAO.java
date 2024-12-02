@@ -55,8 +55,9 @@ public class VideojuegosDAO {
             }
         }catch (SQLException e){
             System.out.println("Error al consultar videojuego: ");
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public void agregarVideojuego(String titulo, String plataforma, double precio, int stock, String desarrollador, LocalDate fecha_lanzamiento ){

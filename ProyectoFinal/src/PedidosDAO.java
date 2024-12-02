@@ -44,6 +44,10 @@ public class PedidosDAO {
             System.out.println("La fecha ingresada no es valida, Operacion cancelada");
             return;
         }
+        System.out.println("Se agregan los detalles del pedido \n");
+        if(!DetallesPedido(id_pedido)){
+            return ;
+        }
 
         String sql = "INSERT INTO Pedidos(id_pedido, id_usuario, fecha_pedido, estado) VALUES(?,?,?,?)";
 
@@ -56,8 +60,6 @@ public class PedidosDAO {
             int filas = ps.executeUpdate();
             if (filas > 0 ){
                 System.out.println("Se ha agregado el pedido, su ID: "+ id_pedido);
-                System.out.println("Se agregan los detalles del pedido \n");
-                DetallesPedido(id_pedido);
             }else{
                 System.out.println("No se pudo agregar el pedido \n\n\n\n\n");
             }
@@ -67,13 +69,20 @@ public class PedidosDAO {
         }
     }
 
-    public void DetallesPedido(int id){
+    public boolean DetallesPedido(int id){
         DetallesPedidoDAO d1 = new DetallesPedidoDAO(con);
+        VideojuegosDAO v1 = new VideojuegosDAO(con);
         System.out.println("Ingresa el ID del videojuego: ");
         int id2 = in.nextInt();
-        System.out.println("Ingresa la cantidad de videojuegos:  ");
-        int cant = in.nextInt();
-        d1.agregarDetallesPedido(id,id2,cant);
+        boolean test = v1.buscarVideojuego(id2);
+        if(test) {
+            System.out.println("Ingresa la cantidad de videojuegos:  ");
+            int cant = in.nextInt();
+            d1.agregarDetallesPedido(id, id2, cant);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public void eliminarDetallesPedido(int id){
